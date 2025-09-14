@@ -30,11 +30,14 @@ setting.jsonに
     "ruff.lint.enable": true,
     "ruff.lineLength": 120, // 一行の長さを120字まで許可
     "ruff.lint.extendSelect": [
-        "PTH" // パス操作をpathlib以外で行ってはいけない 
+        "PTH" // パス操作をpathlib以外で行ってはいけない
     ],
     "ruff.lint.ignore": [
         "E714", // not a is Noneの書き方を許容
-        "F401" // importしてそのファイルで使ってないやつを許容
+        "F401", // importしてそのファイルで使ってないやつを許容
+        "F403", // import * (ワイルドカードインポート)を許容
+        "F405", // import * (ワイルドカードインポート)したやつを許容
+        "I001" // 並べ替えルールを無視（Fix All 対策）
     ] // Linter・Formatter無効化設定
 ```
 
