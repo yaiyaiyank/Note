@@ -9,8 +9,11 @@ ruffで以下の条件でフォーマットする
 
 
 ruffで以下の条件でリントする
-・pathlibの偉大さを伝える (理由: os.path, glob, openが保つ機能がPathに集約されている。write_text等の便利なメソッドがある。パス操作はos.pathだと関数in関数みたいに複雑になるが、pathlibだと楽。path.parent / "setting.toml"と同じ操作をos.pathでするとどうなるか、考えるだけで恐ろしい。)
+・pathlibの偉大さを伝える (理由: os.path, glob, openが持つ機能がPathに集約されている。write_text等の便利なメソッドがある。パス操作はos.pathだと関数in関数みたいに複雑になるが、pathlibだと楽。path.parent / "setting.toml"と同じ操作をos.pathでするとどうなるか、考えるだけで恐ろしい。)
 ・not a is Noneの書き方を許容 (理由: a is not Noneみたいな書き方は別に可読性変わらないし、新しい構文が増えるだけなのでむしろしたくない。not a is Noneはnotとa is Noneという既存の構文の組み合わせ)
+・not a in bの書き方を許容 (理由: 同上)
+・ワイルドカードok (いろいろなライブラリ(jpholidayなど)を見ても普通にワイルドカード使ってる)
+・ワイルドカードでimpoertしたLiteralを使えるようにする。
 ・importしてそのファイルで使ってないやつを許容
 
 
@@ -33,12 +36,15 @@ setting.jsonに
         "PTH" // パス操作をpathlib以外で行ってはいけない
     ],
     "ruff.lint.ignore": [
+        "E713", // not a in bの書き方を許容
         "E714", // not a is Noneの書き方を許容
         "F401", // importしてそのファイルで使ってないやつを許容
         "F403", // import * (ワイルドカードインポート)を許容
         "F405", // import * (ワイルドカードインポート)したやつを許容
-        "I001" // 並べ替えルールを無視（Fix All 対策）
-    ] // Linter・Formatter無効化設定
+        "I001", // 並べ替えルールを無視（Fix All 対策）
+        "E721", // type(obj)を許可する。isinstanceは継承先を含めるため、is_testがbool型だとするとisinstance(is_test, int)でTrueになり事故る
+        "F821" // Literal["a"]ってするときに文字列なのに何かの変数名になるバグ回避(ワイルドカードでLiteralをインポートして使うとこうなる)
+        ] // Linter・Formatter無効化設定
 ```
 
 と書く
